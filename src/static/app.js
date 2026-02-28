@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
-      const response = await fetch("/activities");
+      const response = await fetch("/activities", { cache: "no-store" });
       const activities = await response.json();
 
       // Clear loading message
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 5000);
 
       if (response.ok) {
-        fetchActivities();
+        await fetchActivities();
       }
     } catch (error) {
       messageDiv.textContent = "Failed to sign up. Please try again.";
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
-        fetchActivities();
+        await fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "Unable to unregister participant";
         messageDiv.className = "error";
