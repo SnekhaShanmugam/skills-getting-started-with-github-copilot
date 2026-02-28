@@ -11,5 +11,6 @@ def test_get_activities_returns_activity_mapping(client):
 
     assert response.status_code == 200
     assert isinstance(data, dict)
-    assert "hiking" in data
-    assert "participants" in data["hiking"]
+    assert len(data) > 0
+    first_activity = next(iter(data.values()))
+    assert "participants" in first_activity

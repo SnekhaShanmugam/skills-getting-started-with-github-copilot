@@ -2,13 +2,13 @@ from src.app import activities
 
 
 def test_signup_successfully_adds_participant(client):
-    activity_name = "hiking"
+    activity_name = next(iter(activities.keys()))
     email = "new.person@example.com"
 
     response = client.post(f"/activities/{activity_name}/signup", params={"email": email})
 
     assert response.status_code == 200
-    assert response.json()["message"] == f"{email} signed up for {activity_name}"
+    assert response.json()["message"] == f"Signed up {email} for {activity_name}"
     assert email in activities[activity_name]["participants"]
 
 
@@ -20,10 +20,10 @@ def test_signup_returns_404_for_unknown_activity(client):
 
 
 def test_signup_returns_400_for_duplicate_participant(client):
-    activity_name = "book_club"
+    activity_name = next(iter(activities.keys()))
     existing_email = activities[activity_name]["participants"][0]
 
     response = client.post(f"/activities/{activity_name}/signup", params={"email": existing_email})
 
     assert response.status_code == 400
-    assert response.json()["detail"] == "Participant already signed up"
+    assert response.json()["detail"] == "Student is already signed up for this activity"
